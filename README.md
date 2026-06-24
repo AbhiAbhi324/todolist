@@ -23,24 +23,5 @@ Once the baseline MVC todo system and database collection workflow are completed
 1.  🎯 **Smart Prioritization Engine**: An ML model utilizing user historical completion speeds to dynamically rank tasks.
 2.  🏷️ **Auto-Tagging System**: Natural Language Processing (NLP) text categorization to auto-group newly created tasks.
 
----
-
-### 💻 Installation and Local Setup
-
-1. Clone the repository down to your computer:
-   ```bash
-   git clone https://github.com
-   ```
-2. Navigate into the directory and initialize your environment:
-   ```bash
-   cd todolist
-   python -m venv myenv
-   ```
-3. Activate your virtual environment and launch your dev server:
-   ```bash
-   # Windows Powershell:
-   .\myenv\Scripts\Activate.ps1
-   python main.py
-   ```
 
 
