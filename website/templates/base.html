@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Web App{% endblock %}</title>
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background: linear-gradient(135deg, #535d64 0%, #253b46 50%, #152d3a 100%); 
+            background-attachment: fixed; 
+            color: #ffffff; 
+            min-height: 100vh;
+        }
+        
+        nav { 
+            background: transparent; 
+            padding: 24px 40px; 
+            border-bottom: none; 
+        }
+
+        nav a { 
+            color: #f6c0c0; 
+            margin-right: 25px; 
+            text-decoration: none; 
+            font-weight: 300; 
+            font-size: 16px;
+            letter-spacing: -0.3px;
+            opacity: 0.75; 
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            display: inline-block;
+        }
+
+        nav a:hover { 
+            opacity: 1; 
+            transform: translateY(-1px);
+        }
+
+        .container { 
+            padding: 20px; 
+            max-width: 800px; 
+            margin: auto; 
+            background: transparent; 
+            margin-top: 10px; 
+            border-radius: 5px; 
+        }
+        
+        form div { margin-bottom: 15px; }
+        input[type="text"], input[type="password"] { width: 100%; padding: 8px; margin-top: 5px; }
+        button { background: #007BFF; color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 3px; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/signin">Sign-in</a>
+        <a href="/login">Login</a>
+    </nav>
+
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}Just do it.{% endblock %}
+
+{% block content %}
+<style>
+    .dashboard-canvas {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 70vh; 
+        text-align: center;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    .main-logo {
+        font-size: 82px; 
+        font-weight: 300; 
+        color: #f6c0c0; 
+        margin: 0 0 40px 0;
+        letter-spacing: -1px;
+    }
+
+    .motivation-capsule {
+        display: flex;
+        align-items: center;
+        background: #141414;
+        border-radius: 30px; 
+        padding: 6px; 
+        width: 100%;
+        max-width: 520px; 
+        border: 1px solid #2a2a2a;
+        margin-bottom: 25px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        transition: border-color 0.2s ease;
+    }
+
+    .motivation-text {
+        flex: 1;
+        padding: 12px 24px;
+        color: #a0a0a0; 
+        font-size: 16px; 
+        font-weight: 400;
+        letter-spacing: -0.2px;
+        text-align: left;
+    }
+
+    .capsule-action-btn {
+        background: #f6c0c0;
+        color: #141414;
+        padding: 12px 28px; 
+        border-radius: 24px;
+        font-size: 14px; 
+        font-weight: 600;
+        white-space: nowrap;
+        border: none;
+        cursor: pointer;
+        outline: none;
+        transition: background-color 0.2s ease, color 0.2s ease, border-radius 0.2s ease, min-width 0.2s ease, height 0.2s ease, box-shadow 0.4s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 110px; 
+    }
+
+    .capsule-action-btn.success-state {
+        background-color: #2e7d32; 
+        color: #ffffff;            
+        border-radius: 50%;        
+        min-width: 44px; 
+        height: 44px;
+        padding: 0;
+        box-shadow: 0 0 16px #4caf50, 0 0 32px #2e7d32;
+    }
+
+    .capsule-action-btn.glow-out-state {
+        box-shadow: none; 
+    }
+
+    .timestamp-tracker {
+        color: #65757d;
+        font-size: 15px; 
+        font-weight: 500;
+        letter-spacing: 0.5px;
+    }
+</style>
+
+<div class="dashboard-canvas">
+    
+    <h1 class="main-logo">Just do it.</h1>
+
+    <div class="motivation-capsule" id="capsule-container">
+        <div class="motivation-text">Stop wishing. Start doing.</div>
+        <button type="button" class="capsule-action-btn" id="action-trigger" onclick="handleButtonClick()">I Got This!</button>
+    </div>
+
+    <div class="timestamp-tracker" id="live-clock">Loading live time...</div>
+
+</div>
+
+<script>
+    const successSound = new Audio('https://mixkit.co');
+    successSound.volume = 0.6; 
+
+    function handleButtonClick() {
+        const button = document.getElementById('action-trigger');
+        const capsule = document.getElementById('capsule-container');
+        
+        button.onclick = null;
+        
+        successSound.play().catch(error => {
+            console.log("Audio failed to load or play from network path:", error);
+        });
+        
+        button.textContent = "OK";
+        button.classList.add('success-state');
+        capsule.style.borderColor = "#2e7d32"; 
+
+        setTimeout(() => {
+            button.classList.add('glow-out-state');
+            capsule.style.borderColor = "#2a2a2a"; 
+        }, 400);
+    }
+
+    function updateClock() {
+        const now = new Date();
+        
+        const day = now.getDate();
+        const year = now.getFullYear();
+        const monthName = now.toLocaleString('en-US', { month: 'long' }).toUpperCase();
+        
+        const timeString = now.toLocaleString('en-US', {
+            hour: 'numeric',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+        });
+        
+        const formattedDateTime = `${day} ${monthName} ${year}, ${timeString}`;
+        document.getElementById('live-clock').textContent = formattedDateTime;
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
+</script>
+{% endblock %}
