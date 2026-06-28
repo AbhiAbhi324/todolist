@@ -2,6 +2,7 @@ from flask import Blueprint,render_template,request,flash,redirect,url_for
 from .model import User,Note
 from . import db
 from werkzeug.security import generate_password_hash,check_password_hash
+import re
 
 auth =Blueprint("auth",__name__)
 
@@ -36,11 +37,12 @@ def signin():
         password2=request.form.get('confirm_password')
 
         user=User.query.filter_by(email=Email).first()
+        email_pattern=r'^[a-z0-9\.-]+@gmail\.com$'
 
         if user:
             flash('Email already exists!',category='error')
-        elif len(Email) < 4:
-            flash('Email must be greater than 3 characters.', category='error')
+        elif not re.match(email_pattern, Email):
+            flash('Enter valid email only!',category='error')
         elif len(Name) < 2:
             flash('First name must be greater than 1 character.', category='error')
         elif password != password2:

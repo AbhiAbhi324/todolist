@@ -17,7 +17,7 @@
     .main-logo {
         font-size: 82px; 
         font-weight: 300; 
-        color: #f6c0c0; 
+        color: #0f172a; /* Sophisticated clean dark tone */
         margin: 0 0 40px 0;
         letter-spacing: -1px;
     }
@@ -25,63 +25,76 @@
     .motivation-capsule {
         display: flex;
         align-items: center;
-        background: #141414;
+        /* Premium White Translucent Glassmorphism */
+        background: rgba(255, 255, 255, 0.45);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
         border-radius: 30px; 
         padding: 6px; 
         width: 100%;
         max-width: 520px; 
-        border: 1px solid #2a2a2a;
+        border: 1px solid rgba(255, 255, 255, 0.5);
         margin-bottom: 25px;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-        transition: border-color 0.2s ease;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        transition: border-color 0.3s ease, background-color 0.3s ease;
     }
 
     .motivation-text {
         flex: 1;
         padding: 12px 24px;
-        color: #a0a0a0; 
+        color: #334155; /* Sharp charcoal visibility */
         font-size: 16px; 
-        font-weight: 400;
+        font-weight: 500;
         letter-spacing: -0.2px;
         text-align: left;
     }
 
     .capsule-action-btn {
-        background: #f6c0c0;
-        color: #141414;
+        background: #fecdd3; /* Clean soft rose pastel accent */
+        color: #9f1239;
         padding: 12px 28px; 
         border-radius: 24px;
         font-size: 14px; 
-        font-weight: 600;
+        font-weight: 700;
         white-space: nowrap;
         border: none;
         cursor: pointer;
         outline: none;
-        transition: background-color 0.2s ease, color 0.2s ease, border-radius 0.2s ease, min-width 0.2s ease, height 0.2s ease, box-shadow 0.4s ease;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         display: flex;
         align-items: center;
         justify-content: center;
         min-width: 110px; 
+        box-shadow: 0 4px 12px rgba(225, 29, 72, 0.12);
     }
 
+    .capsule-action-btn:hover {
+        background: #ffe4e6;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(225, 29, 72, 0.2);
+    }
+
+    /* Vibrant Pop Success State */
     .capsule-action-btn.success-state {
-        background-color: #2e7d32; 
+        background-color: #10b981; 
         color: #ffffff;            
         border-radius: 50%;        
         min-width: 44px; 
         height: 44px;
         padding: 0;
-        box-shadow: 0 0 16px #4caf50, 0 0 32px #2e7d32;
+        box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+        transform: scale(1.05);
     }
 
     .capsule-action-btn.glow-out-state {
-        box-shadow: none; 
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15); 
+        transform: scale(1);
     }
 
     .timestamp-tracker {
-        color: #65757d;
+        color: rgba(15, 23, 42, 0.5);
         font-size: 15px; 
-        font-weight: 500;
+        font-weight: 600;
         letter-spacing: 0.5px;
     }
 </style>
@@ -110,16 +123,17 @@
         button.onclick = null;
         
         successSound.play().catch(error => {
-            console.log("Audio failed to load or play from network path:", error);
+            console.log("Audio pathway block sequence trace:", error);
         });
         
-        button.textContent = "OK";
+        // Inject a clean minimalist checkmark icon layout string on trigger success
+        button.innerHTML = `<svg xmlns="http://w3.org" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" style="width: 18px; height: 18px;"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>`;
         button.classList.add('success-state');
-        capsule.style.borderColor = "#2e7d32"; 
+        capsule.style.borderColor = "rgba(16, 185, 129, 0.4)"; 
+        capsule.style.backgroundColor = "rgba(255, 255, 255, 0.65)";
 
         setTimeout(() => {
             button.classList.add('glow-out-state');
-            capsule.style.borderColor = "#2a2a2a"; 
         }, 400);
     }
 
