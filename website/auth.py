@@ -1,13 +1,24 @@
-from flask import Blueprint,render_template,request,flash
+from flask import Blueprint,render_template,request,flash,redirect,url_for
 from .model import User,Note
 from . import db
+from werkzeug.security import generate_password_hash,check_password_hash
 
 auth =Blueprint("auth",__name__)
 
 @auth.route('/login',methods=['GET','POST'])
 def login():
-    data=request.form
-    print(data)
+    if request.method=='POST':
+        username=request.form.get('username')
+        password=request.form.get('password')
+
+        user=User.query.filter_by(email=username).first()
+        if user:
+            if check_password_hash(user.password,password):
+                flash('Successfull Login',category='success1')
+            else:
+                flash('Password incorrect!',category='error1')
+        else:
+            flash('Incorrect email.try again!..',category='error1')
     return render_template("login.html",boolean=True)
 
 @auth.route('/logout')
@@ -23,8 +34,12 @@ def signin():
         Email=request.form.get('username')
         password=request.form.get('password')
         password2=request.form.get('confirm_password')
-        
-        if len(Email) < 4:
+
+        user=User.query.filter_by(email=Email).first()
+
+        if user:
+            flash('Email already exists!',category='error')
+        elif len(Email) < 4:
             flash('Email must be greater than 3 characters.', category='error')
         elif len(Name) < 2:
             flash('First name must be greater than 1 character.', category='error')
@@ -34,11 +49,13 @@ def signin():
             flash('Password must be at least 7 characters.', category='error')
         else:
      
-            new_user = User(email=Email, password=password, name=Name)
+            new_user = User(email=Email, password=generate_password_hash(password), name=Name)
             db.session.add(new_user)
             db.session.commit()
     
             flash('Account created!', category='success')
+
+            return redirect(url_for('views.home'))
             
         
     return render_template("signin.html")
