@@ -9,11 +9,12 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        min-height: 80vh; /* Centered layout geometry override */
+        min-height: 80vh; 
         text-align: center;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         width: 100%;
         box-sizing: border-box;
+        padding: 40px 0;
     }
 
     .main-logo {
@@ -27,13 +28,12 @@
     .motivation-capsule {
         display: flex;
         align-items: center;
-        height: 56px; /* Explicit capsule balance height height */
-        /* Premium White Translucent Glassmorphism */
+        height: 56px; 
         background: rgba(255, 255, 255, 0.45);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
         border-radius: 30px; 
-        padding: 0 6px; /* Layout height buffer optimization */
+        padding: 0 6px; 
         width: 100%;
         max-width: 515px; 
         border: 1px solid rgba(255, 255, 255, 0.5);
@@ -46,11 +46,11 @@
     .motivation-input {
         flex: 1;
         padding: 12px 0; 
-        color: #1e293b; /* Premium high contrast slate visibility override */
+        color: #1e293b; 
         font-size: 16px; 
         font-weight: 500;
         letter-spacing: -0.2px;
-        text-align: left; /* Center-aligned layout string value */
+        text-align: center; 
         background: transparent !important; 
         border: none !important;
         outline: none !important;
@@ -59,14 +59,14 @@
 
     .motivation-input::placeholder {
         color: rgba(30, 41, 59, 0.65);
-        text-align: left;
+        text-align: center;
     }
 
      .capsule-action-btn {
         background: #fecdd3; 
         color: #9f1239;
         padding: 0 28px; 
-        height: 44px; /* Integrated inner button sizing dimensions */
+        height: 44px; 
         border-radius: 22px;
         font-size: 14px; 
         font-weight: 700;
@@ -89,7 +89,6 @@
         box-shadow: 0 6px 16px rgba(225, 29, 72, 0.2);
     }
 
-    /* Vibrant Pop Success State */
     .capsule-action-btn.success-state {
         background-color: #10b981; 
         color: #ffffff;            
@@ -111,6 +110,116 @@
         font-size: 15px; 
         font-weight: 600;
         letter-spacing: 0.5px;
+        margin-bottom: 40px;
+    }
+
+    .task-feed-container {
+        width: 100%;
+        max-width: 515px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    .task-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 18px;
+        padding: 14px 20px;
+        text-align: left;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+
+    .task-card:hover {
+        background: rgba(255, 255, 255, 0.12);
+        transform: translateY(-2px);
+    }
+
+    .task-main-content {
+        color: #ffffff;
+        font-size: 15px;
+        font-weight: 400;
+        letter-spacing: -0.1px;
+        word-break: break-word;
+        flex: 1;
+        padding-right: 15px;
+    }
+
+    /* Right utilities arrangement grouping */
+    .task-right-controls {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .task-meta-time {
+        color: rgba(255, 255, 255, 0.35);
+        font-size: 12px;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    /* ✅ Circular control buttons architecture */
+    .action-circle-btn {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        outline: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .action-circle-btn svg {
+        width: 15px;
+        height: 15px;
+    }
+
+    /* Done (Checkmark) Styling button variants */
+    .btn-done {
+        background: rgba(20, 184, 166, 0.2); 
+        color: #2dd4bf;
+        border: 1px solid rgba(45, 212, 191, 0.3);
+    }
+
+    .btn-done:hover {
+        background: #2dd4bf;
+        color: #0f172a;
+        transform: scale(1.1);
+    }
+
+    /* Delete (Trash) Styling button variants */
+    .btn-delete {
+        background: rgba(244, 63, 94, 0.2); 
+        color: #fb7185;
+        border: 1px solid rgba(251, 113, 133, 0.3);
+    }
+
+    .btn-delete:hover {
+        background: #f43f5e;
+        color: #ffffff;
+        transform: scale(1.1);
+    }
+
+    .empty-state-msg {
+        color: rgba(255, 255, 255, 0.3);
+        font-size: 14px;
+        font-weight: 400;
+        font-style: italic;
+        margin-top: 10px;
     }
 </style>
 {% endblock %}
@@ -120,10 +229,8 @@
     
     <h1 class="main-logo">Just do it.</h1>
 
-    <!-- ✅ 1. Added an HTML Form container pointing to your backend endpoint -->
     <form id="todo-form" method="POST" action="/userpage" style="width: 100%; max-width: 515px;">
         <div class="motivation-capsule" id="capsule-container">
-            <!-- ✅ 2. Added name="action-trigger" so Python request.form.get can read it -->
             <input 
                 type="text" 
                 name="action-trigger"
@@ -133,12 +240,41 @@
                 autocomplete="off"
                 onkeydown="if(event.key === 'Enter') { event.preventDefault(); handleButtonClick(); }"
             >
-            <!-- ✅ 3. Changed to type="button" to allow script calculations before sending -->
             <button type="button" class="capsule-action-btn" id="action-trigger" onclick="handleButtonClick()">I Got This!</button>
         </div>
     </form>
 
     <div class="timestamp-tracker" id="live-clock">Loading live time...</div>
+
+    <div class="task-feed-container">
+        {% if user.notes %}
+            {% for note in user.notes|reverse %}
+                <div class="task-card">
+                    <span class="task-main-content">{{ note.data }}</span>
+                    
+                    <div class="task-right-controls">
+                        <span class="task-meta-time">{{ note.date.strftime('%I:%M %p') }}</span>
+                        
+                        <!-- ✅ DONE CIRCLE BUTTON -->
+                        <button type="button" class="action-circle-btn btn-done" title="Mark complete" onclick="deleteNode('{{ note.id }}')">
+                            <svg xmlns="http://w3.org" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                            </svg>
+                        </button>
+
+                        <!-- ✅ DELETE CIRCLE BUTTON -->
+                        <button type="button" class="action-circle-btn btn-delete" title="Delete task" onclick="deleteNode('{{ note.id }}')">
+                            <svg xmlns="http://w3.org" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.34 6m-4.74 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="empty-state-msg">No active tasks logged for today.</p>
+        {% endif %}
+    </div>
 
 </div>
 {% endblock %}
@@ -154,13 +290,12 @@
         const capsule = document.getElementById('capsule-container');
         const form = document.getElementById('todo-form');
         
-        // Block processing on empty string spaces
         if (input.value.trim() === "") {
             return;
         }
 
         button.onclick = null;
-        input.readOnly = true; // Protect field focus locks while transitioning
+        input.readOnly = true; 
         
         successSound.play().catch(error => {
             console.log("Audio pathway block sequence trace:", error);
@@ -175,10 +310,23 @@
             button.classList.add('glow-out-state');
         }, 400);
 
-        // ✅ 4. Wait for visual checkmark animations to process, then push to database
         setTimeout(() => {
             form.submit();
         }, 1000);
+    }
+
+    // ✅ NEW INTERACTION: Sends a JSON fetch command to Python to drop the row safely
+    function deleteNode(noteId) {
+        fetch('/delete-note', {
+            method: 'POST',
+            body: JSON.stringify({ noteId: noteId }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then((_res) => {
+            // Reloads the active browser window layout to render the shortened list
+            window.location.href = "/userpage";
+        }).catch(err => console.error("Error clearing data note instance:", err));
     }
 
     function updateClock() {
@@ -186,11 +334,14 @@
         const day = now.getDate();
         const year = now.getFullYear();
         const monthName = now.toLocaleString('en-US', { month: 'long' }).toUpperCase();
-        
+
         const timeString = now.toLocaleString('en-US', {
-            hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true
+            hour: 'numeric',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
         });
-        
+
         document.getElementById('live-clock').textContent = `${day} ${monthName} ${year}, ${timeString}`;
     }
 
