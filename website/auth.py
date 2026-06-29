@@ -58,6 +58,7 @@ def signin():
             new_user = User(email=Email, password=generate_password_hash(password), name=Name)
             db.session.add(new_user)
             db.session.commit()
+            login_user(new_user, remember=True)
     
             flash('Account created!', category='success')
 
