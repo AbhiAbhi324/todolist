@@ -9,9 +9,11 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        min-height: 70vh; 
+        min-height: 80vh; /* Centered layout geometry override */
         text-align: center;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .main-logo {
@@ -25,29 +27,30 @@
     .motivation-capsule {
         display: flex;
         align-items: center;
+        height: 56px; /* Explicit capsule balance height height */
         /* Premium White Translucent Glassmorphism */
         background: rgba(255, 255, 255, 0.45);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
         border-radius: 30px; 
-        padding: 8.5px; 
+        padding: 0 6px; /* Layout height buffer optimization */
         width: 100%;
         max-width: 515px; 
         border: 1px solid rgba(255, 255, 255, 0.5);
-        margin-bottom: 25px;
+        margin: 0 auto 25px auto;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
         transition: border-color 0.3s ease, background-color 0.3s ease;
+        box-sizing: border-box;
     }
-
 
     .motivation-input {
         flex: 1;
-        padding: 12px 24px;
-        color: #334155;
+        padding: 12px 0; 
+        color: #1e293b; /* Premium high contrast slate visibility override */
         font-size: 16px; 
         font-weight: 500;
         letter-spacing: -0.2px;
-        text-align: left;
+        text-align: left; /* Center-aligned layout string value */
         background: transparent !important; 
         border: none !important;
         outline: none !important;
@@ -55,14 +58,16 @@
     }
 
     .motivation-input::placeholder {
-        color: rgba(255, 255, 255, 0.55);
+        color: rgba(30, 41, 59, 0.65);
+        text-align: left;
     }
 
      .capsule-action-btn {
-        background: #fecdd3; /* Clean soft rose pastel accent */
+        background: #fecdd3; 
         color: #9f1239;
-        padding: 12px 28px; 
-        border-radius: 24px;
+        padding: 0 28px; 
+        height: 44px; /* Integrated inner button sizing dimensions */
+        border-radius: 22px;
         font-size: 14px; 
         font-weight: 700;
         white-space: nowrap;
@@ -75,6 +80,7 @@
         justify-content: center;
         min-width: 110px; 
         box-shadow: 0 4px 12px rgba(225, 29, 72, 0.12);
+        box-sizing: border-box;
     }
 
     .capsule-action-btn:hover {
@@ -112,20 +118,25 @@
 {% block content %}
 <div class="dashboard-canvas">
     
-    <!-- This heading is now completely fixed and static -->
     <h1 class="main-logo">Just do it.</h1>
 
-    <div class="motivation-capsule" id="capsule-container">
-        <input 
-            type="text" 
-            class="motivation-input" 
-            id="motivation-input" 
-            placeholder="Stop wishing. Start doing."
-            autocomplete="off"
-            onkeydown="if(event.key === 'Enter') handleButtonClick()"
-        >
-        <button type="button" class="capsule-action-btn" id="action-trigger" onclick="handleButtonClick()">I Got This!</button>
-    </div>
+    <!-- ✅ 1. Added an HTML Form container pointing to your backend endpoint -->
+    <form id="todo-form" method="POST" action="/userpage" style="width: 100%; max-width: 515px;">
+        <div class="motivation-capsule" id="capsule-container">
+            <!-- ✅ 2. Added name="action-trigger" so Python request.form.get can read it -->
+            <input 
+                type="text" 
+                name="action-trigger"
+                class="motivation-input" 
+                id="motivation-input" 
+                placeholder="Stop wishing. Start doing."
+                autocomplete="off"
+                onkeydown="if(event.key === 'Enter') { event.preventDefault(); handleButtonClick(); }"
+            >
+            <!-- ✅ 3. Changed to type="button" to allow script calculations before sending -->
+            <button type="button" class="capsule-action-btn" id="action-trigger" onclick="handleButtonClick()">I Got This!</button>
+        </div>
+    </form>
 
     <div class="timestamp-tracker" id="live-clock">Loading live time...</div>
 
@@ -141,10 +152,15 @@
         const input = document.getElementById('motivation-input');
         const button = document.getElementById('action-trigger');
         const capsule = document.getElementById('capsule-container');
+        const form = document.getElementById('todo-form');
         
-        // Locked interactions during success checkmark phase
+        // Block processing on empty string spaces
+        if (input.value.trim() === "") {
+            return;
+        }
+
         button.onclick = null;
-        input.disabled = true;
+        input.readOnly = true; // Protect field focus locks while transitioning
         
         successSound.play().catch(error => {
             console.log("Audio pathway block sequence trace:", error);
@@ -159,16 +175,10 @@
             button.classList.add('glow-out-state');
         }, 400);
 
-        // Clears out what you typed and resets the bar for the next entry
+        // ✅ 4. Wait for visual checkmark animations to process, then push to database
         setTimeout(() => {
-            button.classList.remove('success-state', 'glow-out-state');
-            button.innerHTML = "I Got This!";
-            button.onclick = handleButtonClick;
-            input.disabled = false;
-            input.value = ""; 
-            capsule.style.borderColor = "rgba(255, 255, 255, 0.25)";
-            capsule.style.backgroundColor = "rgba(255, 255, 255, 0.45)";
-        }, 2200);
+            form.submit();
+        }, 1000);
     }
 
     function updateClock() {

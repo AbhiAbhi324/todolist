@@ -1,5 +1,5 @@
 from flask import Blueprint,render_template,request,flash,redirect,url_for
-from .model import User,Note
+from .model import User
 from . import db
 from werkzeug.security import generate_password_hash,check_password_hash
 import re
@@ -24,7 +24,7 @@ def login():
                 flash('Password incorrect!',category='error1')
         else:
             flash('Incorrect email.try again!..',category='error1')
-    return render_template("login.html")
+    return render_template("login.html",user=current_user)
 
 @auth.route('/logout')
 @login_required
@@ -34,8 +34,6 @@ def logout():
 
 @auth.route('/signin',methods=['GET','POST'])
 def signin():
-    data=request.form
-    print(data)
     if request.method=='POST':
         Name=request.form.get('name')
         Email=request.form.get('username')
@@ -66,4 +64,4 @@ def signin():
             return redirect(url_for('views.user'))
             
         
-    return render_template("signin.html")
+    return render_template("signin.html",user=current_user)

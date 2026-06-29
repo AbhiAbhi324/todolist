@@ -58,7 +58,7 @@
 <body>
 
     <nav>
-        {% if current_user.is_authenticated or session.get('user_id') or logged_in %}
+        {% if current_user.is_authenticated %}
             <!-- Only shown on your home user page dashboard layout -->
             <a href="/logout">Logout</a>
         {% else %}
