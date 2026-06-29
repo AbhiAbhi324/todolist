@@ -22,7 +22,7 @@
         }
 
         nav a { 
-            color: #f6c0c0; 
+            color: #ffffff; 
             margin-right: 25px; 
             text-decoration: none; 
             font-weight: 300; 
@@ -51,13 +51,22 @@
         input[type="text"], input[type="password"] { width: 100%; padding: 8px; margin-top: 5px; }
         button { background: #007BFF; color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 3px; }
     </style>
+    
+    <!-- Dynamic custom styling block for child templates -->
+    {% block extra_head %}{% endblock %}
 </head>
 <body>
 
     <nav>
-        <a href="/">Home</a>
-        <a href="/signin">Sign-in</a>
-        <a href="/login">Login</a>
+        {% if current_user.is_authenticated or session.get('user_id') or logged_in %}
+            <!-- Only shown on your home user page dashboard layout -->
+            <a href="/logout">Logout</a>
+        {% else %}
+            <!-- Standard visitor options -->
+            <a href="/">Home</a>
+            <a href="/signin">Sign-in</a>
+            <a href="/login">Login</a>
+        {% endif %}
     </nav>
 
     <div class="container">
@@ -65,5 +74,7 @@
         {% endblock %}
     </div>
 
+    <!-- Dynamic JavaScript script block for child templates -->
+    {% block extra_scripts %}{% endblock %}
 </body>
 </html>

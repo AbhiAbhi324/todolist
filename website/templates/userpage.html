@@ -2,7 +2,7 @@
 
 {% block title %}Just do it.{% endblock %}
 
-{% block content %}
+{% block extra_head %}
 <style>
     .dashboard-canvas {
         display: flex;
@@ -30,26 +30,35 @@
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
         border-radius: 30px; 
-        padding: 6px; 
+        padding: 8.5px; 
         width: 100%;
-        max-width: 520px; 
+        max-width: 515px; 
         border: 1px solid rgba(255, 255, 255, 0.5);
         margin-bottom: 25px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
         transition: border-color 0.3s ease, background-color 0.3s ease;
     }
 
-    .motivation-text {
+
+    .motivation-input {
         flex: 1;
         padding: 12px 24px;
-        color: #334155; /* Sharp charcoal visibility */
+        color: #334155;
         font-size: 16px; 
         font-weight: 500;
         letter-spacing: -0.2px;
         text-align: left;
+        background: transparent !important; 
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
     }
 
-    .capsule-action-btn {
+    .motivation-input::placeholder {
+        color: rgba(255, 255, 255, 0.55);
+    }
+
+     .capsule-action-btn {
         background: #fecdd3; /* Clean soft rose pastel accent */
         color: #9f1239;
         padding: 12px 28px; 
@@ -98,61 +107,81 @@
         letter-spacing: 0.5px;
     }
 </style>
+{% endblock %}
 
+{% block content %}
 <div class="dashboard-canvas">
     
+    <!-- This heading is now completely fixed and static -->
     <h1 class="main-logo">Just do it.</h1>
 
     <div class="motivation-capsule" id="capsule-container">
-        <div class="motivation-text">Stop wishing. Start doing.</div>
+        <input 
+            type="text" 
+            class="motivation-input" 
+            id="motivation-input" 
+            placeholder="Stop wishing. Start doing."
+            autocomplete="off"
+            onkeydown="if(event.key === 'Enter') handleButtonClick()"
+        >
         <button type="button" class="capsule-action-btn" id="action-trigger" onclick="handleButtonClick()">I Got This!</button>
     </div>
 
     <div class="timestamp-tracker" id="live-clock">Loading live time...</div>
 
 </div>
+{% endblock %}
 
+{% block extra_scripts %}
 <script>
     const successSound = new Audio('https://mixkit.co');
     successSound.volume = 0.6; 
 
     function handleButtonClick() {
+        const input = document.getElementById('motivation-input');
         const button = document.getElementById('action-trigger');
         const capsule = document.getElementById('capsule-container');
         
+        // Locked interactions during success checkmark phase
         button.onclick = null;
+        input.disabled = true;
         
         successSound.play().catch(error => {
             console.log("Audio pathway block sequence trace:", error);
         });
         
-        // Inject a clean minimalist checkmark icon layout string on trigger success
         button.innerHTML = `<svg xmlns="http://w3.org" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" style="width: 18px; height: 18px;"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>`;
         button.classList.add('success-state');
         capsule.style.borderColor = "rgba(16, 185, 129, 0.4)"; 
-        capsule.style.backgroundColor = "rgba(255, 255, 255, 0.65)";
+        capsule.style.backgroundColor = "rgba(255, 255, 255, 0.15)";
 
         setTimeout(() => {
             button.classList.add('glow-out-state');
         }, 400);
+
+        // Clears out what you typed and resets the bar for the next entry
+        setTimeout(() => {
+            button.classList.remove('success-state', 'glow-out-state');
+            button.innerHTML = "I Got This!";
+            button.onclick = handleButtonClick;
+            input.disabled = false;
+            input.value = ""; 
+            capsule.style.borderColor = "rgba(255, 255, 255, 0.25)";
+            capsule.style.backgroundColor = "rgba(255, 255, 255, 0.45)";
+        }, 2200);
     }
 
     function updateClock() {
         const now = new Date();
-        
         const day = now.getDate();
         const year = now.getFullYear();
         const monthName = now.toLocaleString('en-US', { month: 'long' }).toUpperCase();
         
         const timeString = now.toLocaleString('en-US', {
-            hour: 'numeric',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: true
+            hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true
         });
         
-        const formattedDateTime = `${day} ${monthName} ${year}, ${timeString}`;
-        document.getElementById('live-clock').textContent = formattedDateTime;
+        document.getElementById('live-clock').textContent = `${day} ${monthName} ${year}, ${timeString}`;
     }
 
     updateClock();
